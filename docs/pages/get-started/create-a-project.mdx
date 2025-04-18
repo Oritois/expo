@@ -1,24 +1,85 @@
----
-title: Create a project
-description: Learn how to create a new Expo project.
-hideTOC: true
----
+npm install -g expo-cli
+expo init 
+cd MyAIApp
+expo start
+import React, { useState } from 'react';
+import { Text, View, Image, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-import { Terminal } from '~/ui/components/Snippet';
+export default function App() {
+  const [selectedWord, setSelectedWord] = useState(null);
 
-System requirements:
+  const data = {
+    "نیوتن": {
+      image: "https://upload.wikimedia.org/wikipedia/commons/d/d1/Sir_Isaac_Newton.jpg",
+      description: "نیوتن در سال ۱۶۸۷ قانون گرانش را مطرح کرد."
+    },
+    "انیشتین": {
+      image: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Albert_Einstein_Head.jpg",
+      description: "انیشتین نظریه نسبیت را معرفی کرد."
+    }
+  };
 
-- [Node.js (LTS)](https://nodejs.org/en/).
-- macOS, Windows (Powershell and [WSL 2](https://expo.fyi/wsl)), and Linux are supported.
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>روی یکی از واژه‌ها بزن:</Text>
 
-We recommend starting with the default project created by `create-expo-app`. The default project includes example code to help you get started.
+      <View style={styles.wordsContainer}>
+        {Object.keys(data).map((word, index) => (
+          <TouchableOpacity key={index} onPress={() => setSelectedWord(word)}>
+            <Text style={styles.word}>{word}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-To create a new project, run the following command:
+      {selectedWord && (
+        <View style={styles.result}>
+          <Image source={{ uri: data[selectedWord].image }} style={styles.image} />
+          <Text style={styles.description}>{data[selectedWord].description}</Text>
+        </View>
+      )}
+    </ScrollView>
+  );
+}
 
-<Terminal cmd={['$ npx create-expo-app@latest']} />
-
-> You can choose a different template by adding the [`--template` option](/more/create-expo/#--template).
-
-## Next step
-
-You have a project. Now it's time to set up your development environment so that you can start developing.
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 50,
+    padding: 20,
+    backgroundColor: '#121212',
+  },
+  title: {
+    color: '#fff',
+    fontSize: 22,
+    marginBottom: 20,
+  },
+  wordsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 30,
+  },
+  word: {
+    backgroundColor: '#333',
+    color: '#fff',
+    padding: 10,
+    borderRadius: 10,
+    margin: 5,
+  },
+  result: {
+    alignItems: 'center',
+  },
+  image: {
+    width: 250,
+    height: 250,
+    borderRadius: 20,
+    marginBottom: 10,
+  },
+  description: {
+    color: '#ccc',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+});
+npx create-expo-app MyAIApp
+cd MyAIApp
+npx expo start
+expo start
